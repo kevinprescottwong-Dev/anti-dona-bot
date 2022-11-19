@@ -1,3 +1,4 @@
 const { joinVoiceChannel } = require("./joinVoiceChannel");
+const { initialize } = require("./initialize");
 
-module.exports = { joinVoiceChannel };
+module.exports = { initialize, joinVoiceChannel };

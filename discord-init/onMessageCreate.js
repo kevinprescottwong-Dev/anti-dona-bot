@@ -14,9 +14,9 @@ function onMessageCreate(/** @type {Client} */ client) {
 
     logMessage(message);
 
-    client.channels
-      .fetch(message.channelId)
-      .then((channel) => channel.send(`Received message: ` + message.content));
+    // client.channels
+    //   .fetch(message.channelId)
+    //   .then((channel) => channel.send(`Received message: ` + message.content));
 
     if (message.content.startsWith("/")) {
       console.log("Found command in message...");

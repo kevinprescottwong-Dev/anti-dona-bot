@@ -3,7 +3,6 @@ const { Client, GatewayIntentBits } = require("discord.js");
 const { token } = require("./config.json");
 const fs = require("node:fs");
 const path = require("node:path");
-const { getCommandAsync, isBotMessage, isBotMention } = require("./utils");
 const {
   onceReady,
   onWarn,
@@ -13,7 +12,20 @@ const {
   createCommands,
   onProcessExit,
 } = require("./discord-init");
-const di = require("./discord-init");
+
+const {
+  entersState,
+  joinVoiceChannel,
+  VoiceConnectionStatus,
+  EndBehaviorType,
+} = require("@discordjs/voice");
+const { createWriteStream } = require("node:fs");
+const prism = require("prism-media");
+const { pipeline } = require("node:stream");
+const ffmpeg = require("ffmpeg");
+const sleep = require("util").promisify(setTimeout);
+
+const { initialize } = require("./discord-voice");
 
 // Create a new client instance
 const client = new Client({
@@ -25,6 +37,7 @@ const client = new Client({
     GatewayIntentBits.GuildVoiceStates,
   ],
 });
+initialize(client);
 
 createCommands(client);
 

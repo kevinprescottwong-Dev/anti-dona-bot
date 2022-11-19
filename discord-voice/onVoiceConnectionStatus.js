@@ -6,7 +6,7 @@ const {
 
 const { Client } = require("discord.js");
 
-function onVoiceConnectionStatus(client) {
+function onVoiceConnectionStatus(/** @type {Client} */ client) {
   const joinConfig = {
     channelId: "",
     group: "",

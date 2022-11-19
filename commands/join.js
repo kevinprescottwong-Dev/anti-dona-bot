@@ -20,6 +20,18 @@ module.exports = {
     const vc = getVoiceChannelFromInteraction(interaction);
     console.log({ vc });
 
+    if (!vc) {
+      return await interaction.reply({
+        embeds: [
+          {
+            title: "Error",
+            description: "Cannot find calling user's voice channel",
+          },
+        ],
+        ephemeral: true,
+      });
+    }
+
     joinVoiceChannel(
       vc.id,
       interaction.guild.id,
