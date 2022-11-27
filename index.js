@@ -26,6 +26,7 @@ const ffmpeg = require("ffmpeg");
 const sleep = require("util").promisify(setTimeout);
 
 const { initialize } = require("./discord-voice");
+const Test = require("./azure/speech");
 
 // Create a new client instance
 const client = new Client({

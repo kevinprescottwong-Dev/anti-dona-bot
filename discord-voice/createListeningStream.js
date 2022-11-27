@@ -4,7 +4,6 @@ const { EndBehaviorType } = require("@discordjs/voice");
 
 const prism = require("prism-media");
 const { pipeline } = require("node:stream");
-const ffmpeg = require("ffmpeg");
 
 /* Function to write audio to file (from discord.js example) */
 function createListeningStream(receiver, userId, user) {

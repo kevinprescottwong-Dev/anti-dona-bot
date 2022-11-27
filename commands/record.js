@@ -2,6 +2,7 @@ const {
   SlashCommandBuilder,
   ChatInputCommandInteraction,
   PermissionsBitField,
+  ChannelType,
 } = require("discord.js");
 
 const {
@@ -15,6 +16,7 @@ const { joinVoiceChannel } = require("../discord-voice/joinVoiceChannel");
 const {
   createListeningStream,
 } = require("../discord-voice/createListeningStream");
+const { speechToTextAsync } = require("../utils/speechToText");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -82,7 +84,10 @@ module.exports = {
 
     /* When user speaks in vc*/
     receiver.speaking.on("start", (userId) => {
-      if (userId !== interaction.member.id) return;
+      const userName = interaction.guild.members.cache.get(userId).displayName;
+      console.log(`${userName} has started speaking...`);
+      // if (userId !== interaction.member.id) return;
+
       /* create live stream to save audio */
       createListeningStream(
         receiver,
@@ -91,9 +96,37 @@ module.exports = {
       );
     });
 
+    const checkUserTextFromSpeech = (member) => {
+      const bannedPhrases = ["that's right, boy", "big sheesh", "hey daddy"];
+      return (text) => {
+        console.log("Starting checkUserTextFromSpeech...");
+        if (!text) return;
+        if (bannedPhrases.some((bp) => text.toLowerCase().includes(bp))) {
+          console.log("DONA INFLUECNE FOUND... KICKING FROM VC");
+
+          member.voice.setChannel(null);
+        }
+      };
+    };
+
+    receiver.speaking.on("end", (userId) => {
+      const user = interaction.guild.members.cache.get(userId);
+      const userName = interaction.guild.members.cache.get(userId).displayName;
+      console.log(`${userName} has stopped speaking. Processing audio`);
+      speechToTextAsync(userId, checkUserTextFromSpeech(user)).catch((err) =>
+        console.error(err)
+      );
+    });
+
     /* Return success message */
     return interaction.guild.channels.cache
       .get(interaction.channelId)
-      .send(`🎙️ I am now recording ${botVoiceConnection.name}`);
+      .send(
+        `🎙️ I am now recording ${
+          interaction.guild.channels.cache.get(
+            botVoiceConnection.joinConfig.channelId
+          ).name
+        }`
+      );
   },
 };
