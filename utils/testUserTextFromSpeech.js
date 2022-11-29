@@ -30,7 +30,7 @@ function checkUserTextFromSpeechAsync(member, banConfig, guild) {
             result.push({
               match,
               points: bc.points,
-              role: bc.pointsForRole,
+              role: bc.role,
             });
 
             match = rgx.exec(text);

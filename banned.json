@@ -1,42 +1,74 @@
 [
   {
     "phraseRegex": "([tT]hat('s| is) )?(?<adjective>[\\w]+),? boy",
+    "display": "That's <something>, boi!",
     "points": 100,
-    "pointsForRole": "Dona"
+    "role": "Dona"
+  },
+  {
+    "phraseRegex": "([cC]heese is cry|[jJ]esus (cry|[cC]hrist))",
+    "display": "Jesus CRIIII",
+    "points": 100,
+    "role": "Dona"
   },
   {
     "phraseRegex": "[bB]i+g [sS]hee+sh",
+    "display": "Big Sheesh!",
     "points": 50,
-    "pointsForRole": "Dona"
+    "role": "Dona"
+  },
+  {
+    "phraseRegex": "[hH]ow ([\\w-]+) do so much damage(,? yo)?",
+    "display": "How Li-Ming do so much damage, yo",
+    "points": 50,
+    "role": "Dona"
   },
   {
     "phraseRegex": "([aA]h|[oO]+h+|[oO]ur),? welcome",
+    "display": "Ah, welcome!",
     "points": 100,
-    "pointsForRole": "Connor"
+    "role": "Connor"
   },
   {
     "phraseRegex": "[yY]i+kes",
+    "display": "Yikes!",
     "points": 50,
-    "pointsForRole": "Connor"
+    "role": "Connor"
+  },
+  {
+    "phraseRegex": "[cC]ri+nge",
+    "display": "Cringe!",
+    "points": 50,
+    "role": "Connor"
   },
   {
     "phraseRegex": "[hH]ey,? [dD]addy",
+    "display": "Hey, Daddy!",
     "points": 100,
-    "pointsForRole": "Jeff"
+    "role": "Jeff"
   },
   {
     "phraseRegex": "[hH]o+rny+",
+    "display": "Horny",
     "points": 50,
-    "pointsForRole": "Jeff"
+    "role": "Jeff"
   },
   {
     "phraseRegex": "[rR]avioli",
+    "display": "Ravioli",
     "points": 50,
-    "pointsForRole": "Kevin"
+    "role": "Kevin"
   },
   {
     "phraseRegex": "[nN]o biting",
+    "display": "No biting!",
     "points": 100,
-    "pointsForRole": "Kevin"
+    "role": "Kevin"
+  },
+  {
+    "phraseRegex": "[dD]iaper,? boy",
+    "display": "Diaper Boy",
+    "points": 50,
+    "role": "Sean"
   }
 ]
