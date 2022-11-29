@@ -91,7 +91,7 @@ async function execute(interaction) {
     console.log(`${userName} has stopped speaking. Processing audio`);
     speechToTextAsync(
       userId,
-      checkUserTextFromSpeechAsync(user, banConfig)
+      checkUserTextFromSpeechAsync(user, banConfig, interaction.guild)
     ).catch((err) => console.error(err));
   });
 

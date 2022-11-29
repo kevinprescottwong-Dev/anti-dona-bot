@@ -1,15 +1,17 @@
 const { getUserLevel } = require("./getUserLevel");
-const { GuildMember } = require("discord.js");
+const { GuildMember, Client, Guild } = require("discord.js");
 const { createUserLevel } = require("./createUserLevel");
 const { updateUserLevel } = require("./updateUserLevel");
+const { levelUpsChannelId } = require("../config.json");
 
 /**
  *
  * @param {GuildMember} member
  * @param {any} banConfig
+ * @param {Guild} guild
  * @returns
  */
-function checkUserTextFromSpeechAsync(member, banConfig) {
+function checkUserTextFromSpeechAsync(member, banConfig, guild) {
   const bannedPhrases = ["that's right, boy", "big sheesh", "hey, daddy"];
   return (text) => {
     console.log("Starting checkUserTextFromSpeech...");
@@ -52,8 +54,23 @@ function checkUserTextFromSpeechAsync(member, banConfig) {
       console.log({ user: member.displayName, matches, totalPointsByRole });
       if (matches.length > 0) {
         // update file with new totals
-        updateUserLevel(member.id, totalPointsByRole);
+        const levelUps = updateUserLevel(member.id, totalPointsByRole);
         //// alert channel
+        if (levelUps.length > 0) {
+          guild.channels.cache.get(levelUpsChannelId).send({
+            embeds: [
+              {
+                title: `${member.displayName} leveled up!`,
+                description: `<@${member.id}> has leveled up:\n${levelUps.map(
+                  (lu) =>
+                    `${lu.role} Level: ${Math.floor(lu.xp / 500)} [${
+                      lu.xp
+                    }XP]\n`
+                )}`,
+              },
+            ],
+          });
+        }
       }
     });
 

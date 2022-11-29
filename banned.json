@@ -10,7 +10,7 @@
     "pointsForRole": "Dona"
   },
   {
-    "phraseRegex": "([aA]h|[oO]+h+),? welcome",
+    "phraseRegex": "([aA]h|[oO]+h+|[oO]ur),? welcome",
     "points": 100,
     "pointsForRole": "Connor"
   },
@@ -21,6 +21,11 @@
   },
   {
     "phraseRegex": "[hH]ey,? [dD]addy",
+    "points": 100,
+    "pointsForRole": "Jeff"
+  },
+  {
+    "phraseRegex": "[hH]o+rny+",
     "points": 50,
     "pointsForRole": "Jeff"
   },

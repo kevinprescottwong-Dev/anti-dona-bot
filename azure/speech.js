@@ -19,6 +19,7 @@ async function SttFromWav(wavFileLocation, checkUserSpeechCallback) {
   );
 
   speechConfig.speechRecognitionLanguage = "en-US";
+  speechConfig.setProfanity(sdk.ProfanityOption.Raw);
 
   var absolutePath = path.resolve(wavFileLocation);
 
