@@ -70,5 +70,11 @@
     "display": "Diaper Boy",
     "points": 50,
     "role": "Sean"
+  },
+  {
+    "phraseRegex": "[fF]ight in my lava wave",
+    "display": "Fight in my lava wave",
+    "points": 50,
+    "role": "Sean"
   }
 ]

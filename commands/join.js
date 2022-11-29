@@ -18,7 +18,6 @@ module.exports = {
     if (!interaction) return;
 
     const vc = getVoiceChannelFromInteraction(interaction);
-    console.log({ vc });
 
     if (!vc) {
       return await interaction.reply({

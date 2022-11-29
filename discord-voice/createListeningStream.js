@@ -27,13 +27,13 @@ function createListeningStream(receiver, user) {
   const filename = `./recordings/${user.id}.pcm`;
 
   const out = createWriteStream(filename, { flags: "a" });
-  console.log(`👂 Started recording ${filename}`);
+  // console.log(`👂 Started recording ${filename}`);
 
   pipeline(opusStream, oggStream, out, (err) => {
     if (err) {
       console.warn(`❌ Error recording file ${filename} - ${err.message}`);
     } else {
-      console.log(`✅ Recorded ${filename}`);
+      // console.log(`✅ Recorded ${filename}`);
     }
   });
 }

@@ -20,7 +20,6 @@ const {
 } = require("../utils/testUserTextFromSpeech");
 
 const banConfig = require("../banned.json");
-console.log({ banConfig });
 
 const data = new SlashCommandBuilder()
   .setName("moderate")
@@ -79,7 +78,7 @@ async function execute(interaction) {
   receiver.speaking.on("start", (userId) => {
     const user = interaction.guild.members.cache.get(userId);
     const userName = user.displayName;
-    console.log(`${userName} has started speaking...`);
+    // console.log(`${userName} has started speaking...`);
 
     /* create live stream to save audio */
     createListeningStream(receiver, user);
@@ -88,7 +87,7 @@ async function execute(interaction) {
   receiver.speaking.on("end", (userId) => {
     const user = interaction.guild.members.cache.get(userId);
     const userName = user.displayName;
-    console.log(`${userName} has stopped speaking. Processing audio`);
+    // console.log(`${userName} has stopped speaking. Processing audio`);
     speechToTextAsync(
       userId,
       checkUserTextFromSpeechAsync(user, banConfig, interaction.guild)

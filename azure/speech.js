@@ -29,7 +29,7 @@ async function SttFromWav(wavFileLocation, checkUserSpeechCallback) {
     fs.readFileSync(absolutePath)
   );
 
-  console.log("Speech Recognizer processing: ", absolutePath);
+  // console.log("Speech Recognizer processing: ", absolutePath);
   const speechRecognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
   let userText = "";
   speechRecognizer.recognizeOnceAsync((result) => {

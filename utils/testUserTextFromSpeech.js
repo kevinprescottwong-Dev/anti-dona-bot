@@ -14,15 +14,12 @@ const { levelUpsChannelId } = require("../config.json");
 function checkUserTextFromSpeechAsync(member, banConfig, guild) {
   const bannedPhrases = ["that's right, boy", "big sheesh", "hey, daddy"];
   return (text) => {
-    console.log("Starting checkUserTextFromSpeech...");
     if (!text) return;
 
     const pa = Promise.all(
       banConfig.map((bc) => {
         const rgx = new RegExp(bc.phraseRegex ?? bc.phrase, "gi");
         return new Promise((resolve) => {
-          console.log({ banConfigItem: bc });
-
           const result = [];
 
           let match = rgx.exec(text);
@@ -40,10 +37,7 @@ function checkUserTextFromSpeechAsync(member, banConfig, guild) {
       })
     );
     pa.then((res) => {
-      console.log({ res });
-
       const matches = res.flat();
-      console.log(JSON.stringify(matches));
 
       const totalPointsByRole = {};
       matches.forEach((m) => {
@@ -51,7 +45,6 @@ function checkUserTextFromSpeechAsync(member, banConfig, guild) {
         else totalPointsByRole[m.role] = m.points;
       });
 
-      console.log({ user: member.displayName, matches, totalPointsByRole });
       if (matches.length > 0) {
         // update file with new totals
         const levelUps = updateUserLevel(member.id, totalPointsByRole);
@@ -73,12 +66,6 @@ function checkUserTextFromSpeechAsync(member, banConfig, guild) {
         }
       }
     });
-
-    if (bannedPhrases.some((bp) => text.toLowerCase().includes(bp))) {
-      console.log("DONA INFLUENCE FOUND... KICKING FROM VC");
-
-      // member.voice.setChannel(null);
-    }
   };
 }
 

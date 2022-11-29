@@ -12,7 +12,6 @@ function updateUserLevel(userId, userLevels = {}) {
   const userLevelPath = path.resolve(`./levels/${userId}.json`);
   // get user's level
   const currUserLevel = getUserLevel(userId);
-  console.log({ currUserLevel, userLevels });
 
   if (currUserLevel) {
     Object.keys(userLevels).forEach((key) => {

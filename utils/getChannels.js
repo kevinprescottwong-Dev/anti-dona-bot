@@ -31,7 +31,6 @@ function getChannels(guild, userId, channelType) {
     vc.members.map((m) => m.id).includes(userId)
   );
 
-  console.log({ userChannel: Array.from(userChannel.values()) });
   return Array.from(userChannel.values());
 }
 

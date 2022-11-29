@@ -97,11 +97,8 @@ module.exports = {
     const checkUserTextFromSpeech = (member) => {
       const bannedPhrases = ["that's right, boy", "big sheesh", "hey, daddy"];
       return (text) => {
-        console.log("Starting checkUserTextFromSpeech...");
         if (!text) return;
         if (bannedPhrases.some((bp) => text.toLowerCase().includes(bp))) {
-          console.log("DONA INFLUECNE FOUND... KICKING FROM VC");
-
           member.voice.setChannel(null);
         }
       };
