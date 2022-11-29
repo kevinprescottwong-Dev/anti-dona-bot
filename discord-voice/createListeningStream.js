@@ -6,8 +6,8 @@ const prism = require("prism-media");
 const { pipeline } = require("node:stream");
 
 /* Function to write audio to file (from discord.js example) */
-function createListeningStream(receiver, userId, user) {
-  const opusStream = receiver.subscribe(userId, {
+function createListeningStream(receiver, user) {
+  const opusStream = receiver.subscribe(user.id, {
     end: {
       behavior: EndBehaviorType.AfterSilence,
       duration: 100,

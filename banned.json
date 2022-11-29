@@ -1,1 +1,37 @@
-["that's right, boy", "big sheesh"]
+[
+  {
+    "phraseRegex": "([tT]hat('s| is) )?(?<adjective>[\\w]+),? boy",
+    "points": 100,
+    "pointsForRole": "Dona"
+  },
+  {
+    "phraseRegex": "[bB]i+g [sS]hee+sh",
+    "points": 50,
+    "pointsForRole": "Dona"
+  },
+  {
+    "phraseRegex": "([aA]h|[oO]+h+),? welcome",
+    "points": 100,
+    "pointsForRole": "Connor"
+  },
+  {
+    "phraseRegex": "[yY]i+kes",
+    "points": 50,
+    "pointsForRole": "Connor"
+  },
+  {
+    "phraseRegex": "[hH]ey,? [dD]addy",
+    "points": 50,
+    "pointsForRole": "Jeff"
+  },
+  {
+    "phraseRegex": "[rR]avioli",
+    "points": 50,
+    "pointsForRole": "Kevin"
+  },
+  {
+    "phraseRegex": "[nN]o biting",
+    "points": 100,
+    "pointsForRole": "Kevin"
+  }
+]

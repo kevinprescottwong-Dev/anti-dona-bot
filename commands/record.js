@@ -84,20 +84,18 @@ module.exports = {
 
     /* When user speaks in vc*/
     receiver.speaking.on("start", (userId) => {
-      const userName = interaction.guild.members.cache.get(userId).displayName;
+      const user = interaction.guild.members.cache.get(userId);
+
+      const userName = user.displayName;
       console.log(`${userName} has started speaking...`);
       // if (userId !== interaction.member.id) return;
 
       /* create live stream to save audio */
-      createListeningStream(
-        receiver,
-        userId,
-        interaction.client.users.cache.get(userId)
-      );
+      createListeningStream(receiver, user);
     });
 
     const checkUserTextFromSpeech = (member) => {
-      const bannedPhrases = ["that's right, boy", "big sheesh", "hey daddy"];
+      const bannedPhrases = ["that's right, boy", "big sheesh", "hey, daddy"];
       return (text) => {
         console.log("Starting checkUserTextFromSpeech...");
         if (!text) return;
@@ -111,7 +109,7 @@ module.exports = {
 
     receiver.speaking.on("end", (userId) => {
       const user = interaction.guild.members.cache.get(userId);
-      const userName = interaction.guild.members.cache.get(userId).displayName;
+      const userName = user.displayName;
       console.log(`${userName} has stopped speaking. Processing audio`);
       speechToTextAsync(userId, checkUserTextFromSpeech(user)).catch((err) =>
         console.error(err)
