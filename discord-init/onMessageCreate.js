@@ -25,7 +25,7 @@ function onMessageCreate(/** @type {Client} */ client) {
       const commandParts = commandMessage.split(" ");
       const commandWithoutSlash = commandParts[0];
 
-      const command = getCommandAsync(commandWithoutSlash);
+      // const command = getCommandAsync(commandWithoutSlash);
     }
   });
 }

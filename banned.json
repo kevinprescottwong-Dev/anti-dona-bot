@@ -12,7 +12,13 @@
     "role": "Dona"
   },
   {
-    "phraseRegex": "[bB]i+g [sS]hee+sh",
+    "phraseRegex": "I('m| am)? so tired?",
+    "display": "I so tired",
+    "points": 100,
+    "role": "Dona"
+  },
+  {
+    "phraseRegex": "([bB]i+g )?([sS]hee+sh|[sS]hish)",
     "display": "Big Sheesh!",
     "points": 50,
     "role": "Dona"
@@ -66,6 +72,12 @@
     "role": "Kevin"
   },
   {
+    "phraseRegex": "[aA]m I being gaslit right now",
+    "display": "Am I being gaslit right now?",
+    "points": 100,
+    "role": "Kevin"
+  },
+  {
     "phraseRegex": "[dD]iaper,? boy",
     "display": "Diaper Boy",
     "points": 50,
@@ -76,5 +88,17 @@
     "display": "Fight in my lava wave",
     "points": 50,
     "role": "Sean"
+  },
+  {
+    "phraseRegex": "[gG]ot(ta)? go to (bed|sleep)",
+    "display": "Gotta go to bed",
+    "points": 150,
+    "role": "Tinga"
+  },
+  {
+    "phraseRegex": "(([hH]ey,? )?[sS]iri,? )?[cC]all,? ([jJ]eff|[gG]eoff|[sS]ean|[sS]haun|[sS]hawn)",
+    "display": "Hey siri, call Jeff",
+    "points": 150,
+    "role": "Cyrus"
   }
 ]

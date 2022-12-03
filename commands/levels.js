@@ -15,6 +15,8 @@ const data = new SlashCommandBuilder()
  * @param {ChatInputCommandInteraction} interaction
  */
 async function execute(interaction) {
+  // load users into cache
+  const users = await interaction.guild.members.fetch();
   const levelsDir = path.resolve("./levels");
   const levelsByRole = {};
   const result = await Promise.all(
@@ -52,7 +54,7 @@ async function execute(interaction) {
       value: levelsByRole[role]
         .map(
           (k) =>
-            `${interaction.guild.members.cache.get(k.userId)?.displayName}: ${
+            `${users.find((gm) => gm.id === k.userId)?.displayName}: ${
               k.points
             } XP [${Math.floor(k.points / 500)}]`
         )
@@ -61,18 +63,6 @@ async function execute(interaction) {
   });
 
   return interaction.reply({ embeds: [eb] });
-  // .then((fileContentsArr) =>
-  //   fileContentsArr.map(
-  //     (fc) =>
-  //       "```" +
-  //       interaction.guild.members.cache.get(fc.userId).displayName +
-  //       ":\n" +
-  //       JSON.stringify(fc.fileContent, null, 2) +
-  //       "```"
-  //   )
-  // );
-
-  // return interaction.reply(result.join("\n\n") || "No levels");
 }
 
 module.exports = { data, execute };
