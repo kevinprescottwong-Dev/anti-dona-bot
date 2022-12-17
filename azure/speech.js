@@ -1,7 +1,6 @@
 // import * as sdk from "microsoft-cognitiveservices-speech-sdk
 var path = require("path");
 const fs = require("fs");
-const Mp32Wav = require("mp3-to-wav");
 const sdk = require("microsoft-cognitiveservices-speech-sdk");
 const {
   azureSpeechServiceKey,
