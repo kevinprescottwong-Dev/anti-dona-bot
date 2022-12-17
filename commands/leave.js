@@ -32,6 +32,7 @@ module.exports = {
         ephemeral: true,
       });
 
+    await interaction.reply("Done");
     botVoiceConnection.destroy();
   },
 };
