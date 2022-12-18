@@ -2,7 +2,7 @@ const { getUserLevel } = require("./getUserLevel");
 const { GuildMember, Client, Guild } = require("discord.js");
 const { createUserLevel } = require("./createUserLevel");
 const { updateUserLevel } = require("./updateUserLevel");
-const { levelUpsChannelId } = require("../config.json");
+const { levelUpsChannelId, sttChannelId } = require("../config.json");
 
 /**
  *
@@ -12,10 +12,13 @@ const { levelUpsChannelId } = require("../config.json");
  * @returns
  */
 function checkUserTextFromSpeechAsync(member, banConfig, guild) {
-  const bannedPhrases = ["that's right, boy", "big sheesh", "hey, daddy"];
   return (text) => {
     if (!text) return;
+    guild.channels.cache
+      .get(sttChannelId)
+      .send(`${member.displayName} said: "${text}"`);
 
+    // Test all regex from config asynchronously
     const pa = Promise.all(
       banConfig.map((bc) => {
         const rgx = new RegExp(bc.phraseRegex ?? bc.phrase, "gi");
