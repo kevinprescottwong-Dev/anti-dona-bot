@@ -78,20 +78,23 @@ async function execute(interaction) {
   receiver.speaking.on("start", (userId) => {
     const user = interaction.guild.members.cache.get(userId);
     const userName = user.displayName;
-    // console.log(`${userName} has started speaking...`);
+    console.log(`${userName} has started speaking...`);
 
     /* create live stream to save audio */
     createListeningStream(receiver, user);
   });
 
-  receiver.speaking.on("end", (userId) => {
+  receiver.speaking.on("end", async (userId) => {
     const user = interaction.guild.members.cache.get(userId);
     const userName = user.displayName;
-    // console.log(`${userName} has stopped speaking. Processing audio`);
-    speechToTextAsync(
-      userId,
-      checkUserTextFromSpeechAsync(user, banConfig, interaction.guild)
-    ).catch((err) => console.error(err));
+    console.log(`${userName} has stopped speaking. Processing audio`);
+    const text = await speechToTextAsync(userId).catch((err) =>
+      console.error(err)
+    );
+
+    console.log({ text });
+
+    checkUserTextFromSpeechAsync(user, banConfig, interaction.guild)(text);
   });
 
   /* Return success message */
