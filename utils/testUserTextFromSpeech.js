@@ -1,13 +1,13 @@
-const { getUserLevel } = require("./getUserLevel");
-const { GuildMember, Client, Guild } = require("discord.js");
-const { createUserLevel } = require("./createUserLevel");
-const { updateUserLevel } = require("./updateUserLevel");
+const { GuildMember, Guild } = require("discord.js");
+const { updateUserLevel } = require("./levels/updateUserLevel");
 const { levelUpsChannelId, sttChannelId } = require("../config.json");
 const banConfig = require("../banned.json");
+const { pointsPerLevel } = require("../levels.config.json");
+
 /**
  *
  * @param {GuildMember} member
- * @param {any} banConfig
+ * @param {any} banConfig-
  * @param {Guild} guild
  * @returns
  */
@@ -60,7 +60,7 @@ function checkUserTextFromSpeechAsync(member, guild) {
                 title: `${member.displayName} leveled up!`,
                 description: `<@${member.id}> has leveled up:\n${levelUps.map(
                   (lu) =>
-                    `${lu.role} Level: ${Math.floor(lu.xp / 500)} [${
+                    `${lu.role} Level: ${Math.floor(lu.xp / pointsPerLevel)} [${
                       lu.xp
                     }XP]\n`
                 )}`,

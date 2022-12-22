@@ -1,12 +1,13 @@
 const path = require("path");
 const fs = require("fs");
 const { getUserLevel } = require("./getUserLevel");
+const { pointsPerLevel: XP_PER_LEVEL } = require("../levels.config.json");
 const { createUserLevel } = require("./createUserLevel");
+const { isLevelUp } = require("./isLevelUp");
 
 function updateUserLevel(userId, userLevels = {}) {
   if (!userId) return;
 
-  const XP_PER_LEVEL = 500;
   const levelUps = [];
 
   const userLevelPath = path.resolve(`./levels/${userId}.json`);
@@ -16,12 +17,7 @@ function updateUserLevel(userId, userLevels = {}) {
   if (currUserLevel) {
     Object.keys(userLevels).forEach((key) => {
       if (currUserLevel[key]) {
-        if (
-          (currUserLevel[key] % XP_PER_LEVEL) +
-            userLevels[key] -
-            XP_PER_LEVEL >=
-          0
-        ) {
+        if (isLevelUp(currUserLevel[key], userLevels[key])) {
           // LEVELED UP!
           levelUps.push({
             role: key,
