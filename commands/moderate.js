@@ -11,22 +11,15 @@ const {
 } = require("@discordjs/voice");
 
 const { joinVoiceChannel } = require("../discord-voice/joinVoiceChannel");
-const {
-  createListeningStream,
-} = require("../discord-voice/createListeningStream");
-const { speechToTextAsync } = require("../utils/speechToText");
-const {
-  checkUserTextFromSpeechAsync,
-} = require("../utils/testUserTextFromSpeech");
-
-const banConfig = require("../banned.json");
+const { onUserStartSpeaking } = require("../discord-voice/onUserStartSpeaking");
+const { onUserStopSpeaking } = require("../discord-voice/onUserStopSpeaking");
 
 const data = new SlashCommandBuilder()
   .setName("moderate")
   .setDescription("Anti-Dona voice moderation!");
 
 /**
- *
+ * Moderates user's voices and checks what they say
  * @param {ChatInputCommandInteraction} interaction
  */
 async function execute(interaction) {
@@ -75,27 +68,10 @@ async function execute(interaction) {
   const receiver = botVoiceConnection.receiver;
 
   /* When user speaks in vc*/
-  receiver.speaking.on("start", (userId) => {
-    const user = interaction.guild.members.cache.get(userId);
-    const userName = user.displayName;
-    console.log(`${userName} has started speaking...`);
+  onUserStartSpeaking(receiver, interaction);
 
-    /* create live stream to save audio */
-    createListeningStream(receiver, user);
-  });
-
-  receiver.speaking.on("end", async (userId) => {
-    const user = interaction.guild.members.cache.get(userId);
-    const userName = user.displayName;
-    console.log(`${userName} has stopped speaking. Processing audio`);
-    const text = await speechToTextAsync(userId).catch((err) =>
-      console.error(err)
-    );
-
-    console.log({ text });
-
-    checkUserTextFromSpeechAsync(user, banConfig, interaction.guild)(text);
-  });
+  /* When user is done speaking in vc*/
+  onUserStopSpeaking(receiver, interaction);
 
   /* Return success message */
   return interaction.reply(

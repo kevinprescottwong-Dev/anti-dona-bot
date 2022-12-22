@@ -3,7 +3,7 @@ const { GuildMember, Client, Guild } = require("discord.js");
 const { createUserLevel } = require("./createUserLevel");
 const { updateUserLevel } = require("./updateUserLevel");
 const { levelUpsChannelId, sttChannelId } = require("../config.json");
-
+const banConfig = require("../banned.json");
 /**
  *
  * @param {GuildMember} member
@@ -11,7 +11,7 @@ const { levelUpsChannelId, sttChannelId } = require("../config.json");
  * @param {Guild} guild
  * @returns
  */
-function checkUserTextFromSpeechAsync(member, banConfig, guild) {
+function checkUserTextFromSpeechAsync(member, guild) {
   return (text) => {
     if (!text) return;
     guild.channels.cache
@@ -19,7 +19,7 @@ function checkUserTextFromSpeechAsync(member, banConfig, guild) {
       .send(`${member.displayName} said: "${text}"`);
 
     // Test all regex from config asynchronously
-    const pa = Promise.all(
+    const regexPromises = Promise.all(
       banConfig.map((bc) => {
         const rgx = new RegExp(bc.phraseRegex ?? bc.phrase, "gi");
         return new Promise((resolve) => {
@@ -39,7 +39,8 @@ function checkUserTextFromSpeechAsync(member, banConfig, guild) {
         });
       })
     );
-    pa.then((res) => {
+
+    regexPromises.then((res) => {
       const matches = res.flat();
 
       const totalPointsByRole = {};

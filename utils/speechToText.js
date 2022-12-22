@@ -1,28 +1,24 @@
-const ffmpeg = require("ffmpeg");
 const fs = require("node:fs");
 const { azureSpeechToTextAsync } = require("../azure/speechToTextAsync");
+const { convertPcmToWavAsync } = require("./convertPcmToWavAsync");
 
+/**
+ * High level wrapper function to call a speech to text service
+ * @param {string} memberId
+ * @param {*} checkUserSpeechCallbackAsync
+ * @returns {Promise<string>} Promise that resolves with the user's speech as text, or rejects with the error message
+ */
 async function speechToTextAsync(memberId, checkUserSpeechCallbackAsync) {
   const filename = `./recordings/${memberId}`;
 
-  /* Create ffmpeg command to convert pcm to mp3 */
-  const process = new ffmpeg(`${filename}.pcm`);
-  const video = await process.catch((err) =>
-    console.error(
-      `❌ An error occurred while processing your recording: ${err.message}`
-    )
-  );
-
-  video.addCommand("-y");
-  video.addCommand("-f", "wav");
-  await video.save(`${filename}.wav`);
+  await convertPcmToWavAsync(filename);
 
   const speechToTextPromise = azureSpeechToTextAsync(`${filename}.wav`);
   if (checkUserSpeechCallbackAsync) {
-    return checkUserSpeechCallbackAsync(await speechToTextPromise);
+    const text = await speechToTextPromise;
+    return checkUserSpeechCallbackAsync(text);
   }
 
-  //delete .wav file once its been parsed
   try {
     fs.unlinkSync(`${filename}.pcm`);
     fs.unlinkSync(`${filename}.wav`);
