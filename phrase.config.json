@@ -100,5 +100,10 @@
     "display": "Hey siri, call Jeff",
     "points": 150,
     "role": "Cyrus"
+  },
+  {
+    "phrase": "Test Phrase",
+    "display": "Test Phrase",
+    "points": 0
   }
 ]
