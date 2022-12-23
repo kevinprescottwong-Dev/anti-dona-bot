@@ -1,4 +1,5 @@
 **/node_modules
 /levels
+/coverage
 recordings
 config.json

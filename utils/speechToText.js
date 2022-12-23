@@ -1,6 +1,8 @@
 const fs = require("node:fs");
 const { azureSpeechToTextAsync } = require("../azure/speechToTextAsync");
-const { convertPcmToWavAsync } = require("./convertPcmToWavAsync");
+const {
+  convertPcmToWavAsync,
+} = require("./audioConversion/convertPcmToWavAsync");
 
 /**
  * High level wrapper function to call a speech to text service

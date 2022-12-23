@@ -1,15 +1,16 @@
 const { GuildMember, Guild } = require("discord.js");
 const { updateUserLevel } = require("./levels/updateUserLevel");
 const { levelUpsChannelId, sttChannelId } = require("../config.json");
-const banConfig = require("../banned.json");
-const { pointsPerLevel } = require("../levels.config.json");
+
+const { calculateUserLevel } = require("./levels/calculateUserLevel");
+const { runPhraseConfigAsync } = require("./config/runPhraseConfigAsync");
 
 /**
- *
- * @param {GuildMember} member
- * @param {any} banConfig-
- * @param {Guild} guild
- * @returns
+ * Creates a callback function that accepts the parsed text from the User's audio.
+ * The callback checks against the phrase config and alerts the channel if level ups happen
+ * @param {GuildMember} member User that generated the text
+ * @param {Guild} guild Used to send messages to channels
+ * @returns {function(string):void} Function that accepts the user's speech to text
  */
 function checkUserTextFromSpeechAsync(member, guild) {
   return (text) => {
@@ -18,59 +19,60 @@ function checkUserTextFromSpeechAsync(member, guild) {
       .get(sttChannelId)
       .send(`${member.displayName} said: "${text}"`);
 
-    // Test all regex from config asynchronously
-    const regexPromises = Promise.all(
-      banConfig.map((bc) => {
-        const rgx = new RegExp(bc.phraseRegex ?? bc.phrase, "gi");
-        return new Promise((resolve) => {
-          const result = [];
-
-          let match = rgx.exec(text);
-          while (match) {
-            result.push({
-              match,
-              points: bc.points,
-              role: bc.role,
-            });
-
-            match = rgx.exec(text);
-          }
-          resolve(result);
-        });
-      })
-    );
-
-    regexPromises.then((res) => {
-      const matches = res.flat();
-
-      const totalPointsByRole = {};
-      matches.forEach((m) => {
-        if (totalPointsByRole[m.role]) totalPointsByRole[m.role] += m.points;
-        else totalPointsByRole[m.role] = m.points;
-      });
-
-      if (matches.length > 0) {
-        // update file with new totals
-        const levelUps = updateUserLevel(member.id, totalPointsByRole);
-        //// alert channel
-        if (levelUps.length > 0) {
-          guild.channels.cache.get(levelUpsChannelId).send({
-            embeds: [
-              {
-                title: `${member.displayName} leveled up!`,
-                description: `<@${member.id}> has leveled up:\n${levelUps.map(
-                  (lu) =>
-                    `${lu.role} Level: ${Math.floor(lu.xp / pointsPerLevel)} [${
-                      lu.xp
-                    }XP]\n`
-                )}`,
-              },
-            ],
-          });
-        }
-      }
-    });
+    runPhraseConfigAsync(text)
+      .then(flatten)
+      .then(getPoints)
+      .then(checkLevelUps)
+      .then(alertChannel(guild, member));
   };
 }
 
 module.exports = { checkUserTextFromSpeechAsync };
+
+function flatten(results) {
+  return results.flat();
+}
+
+function getPoints(matches) {
+  return {
+    matches,
+    totalPointsByRole: calculateTotalPointsByRole(matches),
+  };
+}
+
+function checkLevelUps({ matches, totalPointsByRole }) {
+  if (matches.length > 0) {
+    return updateUserLevel(member.id, totalPointsByRole);
+  }
+}
+
+function alertChannel(guild, member) {
+  return (levelUps) => {
+    guild.channels.cache.get(levelUpsChannelId).send({
+      embeds: [
+        {
+          title: `${member.displayName} leveled up!`,
+          description: `<@${member.id}> has leveled up:\n${levelUps.map(
+            (levelUp) =>
+              `${levelUp.role} Level: ${calculateUserLevel(levelUp.xp)} [${
+                levelUp.xp
+              }XP]\n`
+          )}`,
+        },
+      ],
+    });
+  };
+}
+/**
+ * Goes through the matches and groups them by role
+ * @param {*} matches
+ * @returns
+ */
+function calculateTotalPointsByRole(matches) {
+  const totalPointsByRole = {};
+  matches.forEach((m) => {
+    if (totalPointsByRole[m.role]) totalPointsByRole[m.role] += m.points;
+    else totalPointsByRole[m.role] = m.points;
+  });
+  return totalPointsByRole;
+}

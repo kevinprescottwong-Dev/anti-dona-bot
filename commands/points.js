@@ -7,7 +7,7 @@ const {
   EmbedBuilder,
 } = require("discord.js");
 
-const banConfig = require("../banned.json");
+const phraseConfig = require("../phrase.config.json");
 const data = new SlashCommandBuilder()
   .setName("points")
   .setDescription("Display point info");
@@ -18,11 +18,16 @@ const data = new SlashCommandBuilder()
  */
 async function execute(interaction) {
   const phrasesByRole = {};
-  banConfig.forEach((bc) => {
-    if (phrasesByRole[bc.role]) {
-      phrasesByRole[bc.role].push({ phrase: bc.display, points: bc.points });
+  phraseConfig.forEach((phrase) => {
+    if (phrasesByRole[phrase.role]) {
+      phrasesByRole[phrase.role].push({
+        phrase: phrase.display,
+        points: phrase.points,
+      });
     } else {
-      phrasesByRole[bc.role] = [{ phrase: bc.display, points: bc.points }];
+      phrasesByRole[phrase.role] = [
+        { phrase: phrase.display, points: phrase.points },
+      ];
     }
   });
 

@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const { getUserLevel } = require("./getUserLevel");
-const { pointsPerLevel: XP_PER_LEVEL } = require("../levels.config.json");
+const { pointsPerLevel: XP_PER_LEVEL } = require("../..//levels.config.json");
 const { createUserLevel } = require("./createUserLevel");
 const { isLevelUp } = require("./isLevelUp");
 
@@ -11,7 +11,6 @@ function updateUserLevel(userId, userLevels = {}) {
   const levelUps = [];
 
   const userLevelPath = path.resolve(`./levels/${userId}.json`);
-  // get user's level
   const currUserLevel = getUserLevel(userId);
 
   if (currUserLevel) {

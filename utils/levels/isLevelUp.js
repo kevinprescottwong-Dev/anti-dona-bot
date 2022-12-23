@@ -1,4 +1,4 @@
-const { pointsPerLevel: XP_PER_LEVEL } = require("../levels.config.json");
+const { pointsPerLevel: XP_PER_LEVEL } = require("../../levels.config.json");
 
 /**
  * Checks if the XP gained is enough to level up.
@@ -7,6 +7,8 @@ const { pointsPerLevel: XP_PER_LEVEL } = require("../levels.config.json");
  * @param {number} xpGained
  * @returns
  */
-export function isLevelUp(currentXpLevel, xpGained) {
+function isLevelUp(currentXpLevel, xpGained) {
   return (currentXpLevel % XP_PER_LEVEL) + xpGained - XP_PER_LEVEL >= 0;
 }
+
+module.exports = { isLevelUp };
