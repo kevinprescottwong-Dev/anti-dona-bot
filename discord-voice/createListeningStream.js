@@ -10,13 +10,13 @@ function createListeningStream(receiver, user) {
   const opusStream = receiver.subscribe(user.id, {
     end: {
       behavior: EndBehaviorType.AfterSilence,
-      duration: 100,
+      duration: 300,
     },
   });
 
   const oggStream = new prism.opus.OggLogicalBitstream({
     opusHead: new prism.opus.OpusHead({
-      channelCount: 2,
+      channelCount: 1,
       sampleRate: 48000,
     }),
     pageSizeControl: {

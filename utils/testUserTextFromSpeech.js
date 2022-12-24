@@ -48,6 +48,7 @@ function checkLevelUps({ matches, totalPointsByRole }) {
 
 function alertChannel(guild, member) {
   return (levelUps) => {
+    if (!levelUps) return;
     guild.channels.cache.get(levelUpsChannelId).send({
       embeds: [
         {

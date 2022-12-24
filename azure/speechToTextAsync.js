@@ -27,7 +27,6 @@ async function azureSpeechToTextAsync(wavFileLocation) {
   speechConfig.setProfanity(sdk.ProfanityOption.Raw);
 
   var absolutePath = path.resolve(wavFileLocation);
-  console.log({ absolutePath, exists: fs.existsSync(absolutePath) });
 
   if (!absolutePath) return;
 
@@ -39,10 +38,7 @@ async function azureSpeechToTextAsync(wavFileLocation) {
   let userText = "";
 
   const azureSpeechToTextPromise = new Promise((resolve, reject) => {
-    console.log("Inside azureSpeechToTextPromise...");
     speechRecognizer.recognizeOnceAsync((result) => {
-      console.log("Inside recognizeOnceAsync...");
-
       switch (result.reason) {
         case sdk.ResultReason.RecognizedSpeech:
           console.log(`RECOGNIZED: Text=${result.text}`);
