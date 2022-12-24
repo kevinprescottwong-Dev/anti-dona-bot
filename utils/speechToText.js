@@ -22,16 +22,21 @@ async function speechToTextAsync(memberId) {
   const speechToTextServices = {
     [SpeechToTextServices.Azure]: azureSpeechToTextAsync,
     [SpeechToTextServices.DeepSpeech]: async (filename) => {
-      const results = await deepspeechWithMetaDataAsync(filename);
+      const results = await deepspeechWithMetaDataAsync(filename).catch((err) =>
+        console.error(err)
+      );
+
       console.log({ results });
 
-      const { confidence, textPhrase } = results[0];
-      console.log({ confidence, textPhrase });
+      if (results) {
+        const { confidence, textPhrase } = results[0];
+        console.log({ confidence, textPhrase });
 
-      // Check if DeepSpeech TTS is confident enough, otherwise use Azure
-      // This is to try to save on excess calls to Azure
-      if (confidence >= DEEP_SPEECH_CONFIDENCE_THRESHOLD) {
-        return textPhrase;
+        // Check if DeepSpeech TTS is confident enough, otherwise use Azure
+        // This is to try to save on excess calls to Azure
+        if (confidence >= DEEP_SPEECH_CONFIDENCE_THRESHOLD) {
+          return textPhrase;
+        }
       }
 
       console.log("Confidence check failed... calling Azure...");
