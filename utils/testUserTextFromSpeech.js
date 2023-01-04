@@ -22,7 +22,7 @@ function checkUserTextFromSpeechAsync(member, guild) {
     runPhraseConfigAsync(text)
       .then(flatten)
       .then(getPoints)
-      .then(checkLevelUps)
+      .then(checkLevelUps(member.id))
       .then(alertChannel(guild, member));
   };
 }
@@ -40,10 +40,12 @@ function getPoints(matches) {
   };
 }
 
-function checkLevelUps({ matches, totalPointsByRole }) {
-  if (matches.length > 0) {
-    return updateUserLevel(member.id, totalPointsByRole);
-  }
+function checkLevelUps(memberId) {
+  return ({ matches, totalPointsByRole }) => {
+    if (matches.length > 0) {
+      return updateUserLevel(memberId, totalPointsByRole);
+    }
+  };
 }
 
 function alertChannel(guild, member) {
@@ -64,6 +66,7 @@ function alertChannel(guild, member) {
     });
   };
 }
+
 /**
  * Goes through the matches and groups them by role
  * @param {*} matches
