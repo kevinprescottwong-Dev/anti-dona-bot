@@ -60,6 +60,10 @@ function deepspeechWithMetaDataAsync(filename) {
 
   const promise = new Promise((resolve, reject) => {
     formData.submit(options, (err, res) => {
+      if (err) {
+        reject(err);
+        return;
+      }
       if (!res) return;
 
       res.setEncoding("utf8");
