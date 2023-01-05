@@ -35,5 +35,4 @@ onInteractionCreate(client);
 onMessageCreate(client);
 onProcessExit(client);
 
-console.log({ clientInit: client });
 module.exports = client;
