@@ -2,10 +2,8 @@ const {
   deepspeechHostname: HOSTNAME,
   deepspeechPort: PORT,
 } = require("../config.json");
-const path = require("path");
 const FormData = require("form-data");
 const fs = require("fs");
-const http = require("http");
 
 function deepspeech(filename) {
   const fileStream = fs.createReadStream(filename);
@@ -28,13 +26,12 @@ function deepspeech(filename) {
     result.on("data", (chunk) => {
       chunks.push(chunk);
     });
+
     result.on("end", () => {
       try {
         const body = chunks.join();
         console.log({ body });
-
         const jsonResult = JSON.parse(body);
-
         resolve(jsonResult);
       } catch (err) {
         console.error(err);
@@ -62,12 +59,18 @@ function deepspeechWithMetaDataAsync(filename) {
   const chunks = [];
 
   const promise = new Promise((resolve, reject) => {
-    const result = formData.submit(options, (err, res) => {
+    formData.submit(options, (err, res) => {
+      if (err) {
+        reject(err);
+        return;
+      }
       if (!res) return;
+
       res.setEncoding("utf8");
       res.on("data", function (chunk) {
         chunks.push(chunk);
       });
+
       res.on("end", () => {
         try {
           const body = chunks.join();

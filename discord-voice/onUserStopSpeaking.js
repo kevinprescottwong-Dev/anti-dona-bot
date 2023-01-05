@@ -1,9 +1,15 @@
 const { VoiceReceiver } = require("@discordjs/voice");
 const { ChatInputCommandInteraction } = require("discord.js");
+
 const { speechToTextAsync } = require("../utils/speechToText");
 const {
   checkUserTextFromSpeechAsync,
 } = require("../utils/testUserTextFromSpeech");
+
+const fs = require("node:fs");
+const path = require("node:path");
+const crypto = require("crypto");
+const copyPcm = require("../utils/audioConversion/copyPcm");
 
 /**
  * Handles the event when a user stops speaking
@@ -16,13 +22,7 @@ function onUserStopSpeaking(receiver, interaction) {
     const userName = user.displayName;
     console.log(`${userName} has stopped speaking. Processing audio`);
 
-    const text = await speechToTextAsync(userId).catch((err) =>
-      console.error(err)
-    );
-
-    console.log({ text });
-
-    checkUserTextFromSpeechAsync(user, interaction.guild)(text);
+    const copyRes = copyPcm(user);
   });
 }
 

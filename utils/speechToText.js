@@ -16,8 +16,8 @@ const { deepspeechWithMetaDataAsync } = require("../deepspeech");
  * @param {string} memberId
  * @returns {Promise<string>} Promise that resolves with the user's speech as text, or rejects with the error message
  */
-async function speechToTextAsync(memberId) {
-  const filename = `./recordings/${memberId}`;
+async function speechToTextAsync(memberId, recordingId) {
+  const filename = `./recordings/${memberId}/${recordingId}`;
 
   const speechToTextServices = {
     [SpeechToTextServices.Azure]: azureSpeechToTextAsync,
@@ -44,18 +44,9 @@ async function speechToTextAsync(memberId) {
     },
   };
 
-  await convertPcmToWavAsync(filename);
-
   const text = await speechToTextServices[SPEECH_TO_TEXT_SERVICE](
     `${filename}.wav`
   );
-
-  try {
-    fs.unlinkSync(`${filename}.pcm`);
-    fs.unlinkSync(`${filename}.wav`);
-  } catch (err) {
-    console.log(err);
-  }
 
   return text;
 }
