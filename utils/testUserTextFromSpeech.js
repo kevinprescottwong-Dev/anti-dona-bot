@@ -50,7 +50,8 @@ function checkLevelUps(memberId) {
 
 function alertChannel(guild, member) {
   return (levelUps) => {
-    if (!levelUps) return;
+    console.log("alertChannel", { levelUps });
+    if (!!!levelUps?.length) return;
     guild.channels.cache.get(levelUpsChannelId).send({
       embeds: [
         {
