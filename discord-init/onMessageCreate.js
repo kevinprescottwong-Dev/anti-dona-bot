@@ -12,7 +12,7 @@ function onMessageCreate(/** @type {Client} */ client) {
   client.on("messageCreate", (/** @type {Message} */ message) => {
     if (isBotMessage(client, message)) return;
 
-    logMessage(message);
+    // logMessage(message);
 
     // client.channels
     //   .fetch(message.channelId)

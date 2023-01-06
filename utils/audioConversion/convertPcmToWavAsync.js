@@ -16,7 +16,7 @@ async function convertPcmToWavAsync(filename) {
   );
 
   video.addCommand("-y"); //auto accept file overwriting
-  video.addCommand("-f", "wav"); //convert file to wav
+  // video.addCommand("-f", "wav"); //convert file to wav
   return await video.save(`${filename}.wav`);
 }
 

@@ -10,13 +10,21 @@ const PcmCreatedEventEmitter = require("../../events/PcmCreatedEventEmitter");
  */
 function copyPcm(user) {
   const userId = user.id;
+  if (!fs.existsSync(path.resolve(`./recordings/${userId}.pcm`))) {
+    console.log(
+      path.resolve(`./recordings/${userId}.pcm`),
+      "does NOT exist... will not copy"
+    );
+    return;
+  }
+
   console.time("Creating copy of .pcm");
   const recordingId = crypto.randomUUID();
 
   if (fs.existsSync(`./recordings/${userId}`)) {
-    console.log(`./recordings/${userId}/${recordingId}.pcm EXISTS!`);
+    console.log(`./recordings/${userId}/${recordingId} EXISTS!`);
   } else {
-    console.log(`./recordings/${userId}/${recordingId}.pcm DOES NOT EXIST!`);
+    console.log(`./recordings/${userId}/${recordingId} DOES NOT EXIST!`);
 
     fs.mkdirSync(`./recordings/${userId}`);
   }
