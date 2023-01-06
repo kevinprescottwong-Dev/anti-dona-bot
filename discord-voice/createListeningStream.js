@@ -32,7 +32,6 @@ function createListeningStream(receiver, user) {
   pipeline(opusStream, oggStream, out, (err) => {
     if (err) {
       console.warn(`❌ Error recording file ${filename} - ${err.message}`);
-      unlinkSync(filename);
     } else {
       // console.log(`✅ Recorded ${filename}`);
     }

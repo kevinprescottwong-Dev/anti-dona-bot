@@ -1,14 +1,5 @@
 const { VoiceReceiver } = require("@discordjs/voice");
 const { ChatInputCommandInteraction } = require("discord.js");
-
-const { speechToTextAsync } = require("../utils/speechToText");
-const {
-  checkUserTextFromSpeechAsync,
-} = require("../utils/testUserTextFromSpeech");
-
-const fs = require("node:fs");
-const path = require("node:path");
-const crypto = require("crypto");
 const copyPcm = require("../utils/audioConversion/copyPcm");
 
 /**
