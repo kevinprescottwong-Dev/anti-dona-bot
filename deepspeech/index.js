@@ -30,7 +30,6 @@ function deepspeech(filename) {
     result.on("end", () => {
       try {
         const body = chunks.join();
-        console.log({ body });
         const jsonResult = JSON.parse(body);
         resolve(jsonResult);
       } catch (err) {
@@ -74,7 +73,6 @@ function deepspeechWithMetaDataAsync(filename) {
       res.on("end", () => {
         try {
           const body = chunks.join();
-          console.log({ body });
           const jsonResult = JSON.parse(body);
           resolve(jsonResult);
         } catch (err) {
