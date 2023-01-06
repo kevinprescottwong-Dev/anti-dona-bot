@@ -1,7 +1,7 @@
 const { GuildMember, Guild } = require("discord.js");
 const { updateUserLevel } = require("./levels/updateUserLevel");
 const { levelUpsChannelId, sttChannelId } = require("../config.json");
-
+const path = require("path");
 const { calculateUserLevel } = require("./levels/calculateUserLevel");
 const { runPhraseConfigAsync } = require("./config/runPhraseConfigAsync");
 
@@ -12,18 +12,21 @@ const { runPhraseConfigAsync } = require("./config/runPhraseConfigAsync");
  * @param {Guild} guild Used to send messages to channels
  * @returns {function(string):void} Function that accepts the user's speech to text
  */
-function checkUserTextFromSpeechAsync(member, guild) {
-  return (text) => {
+function checkUserTextFromSpeechAsync(member, guild, wavFileLocation) {
+  return async (text) => {
     if (!text) return;
-    guild.channels.cache
-      .get(sttChannelId)
-      .send(`${member.displayName} said: "${text}"`);
+    const sendMsg = guild.channels.cache.get(sttChannelId).send({
+      content: `${member.displayName} said: "${text}"`,
+      files: [wavFileLocation],
+    });
 
     runPhraseConfigAsync(text)
       .then(flatten)
       .then(getPoints)
       .then(checkLevelUps(member.id))
       .then(alertChannel(guild, member));
+
+    await sendMsg;
   };
 }
 
@@ -50,7 +53,6 @@ function checkLevelUps(memberId) {
 
 function alertChannel(guild, member) {
   return (levelUps) => {
-    console.log("alertChannel", { levelUps });
     if (!!!levelUps?.length) return;
     guild.channels.cache.get(levelUpsChannelId).send({
       embeds: [

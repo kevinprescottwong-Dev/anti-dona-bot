@@ -19,11 +19,10 @@ WavCreatedEventEmitter.on(
     const parsed = path.parse(wavFileLocation);
     const pcmFileLocation = path.join(parsed.dir, `${parsed.name}.pcm`);
 
+    await checkUserTextFromSpeechAsync(user, user.guild, wavFileLocation)(text);
+
     fs.unlinkSync(pcmFileLocation);
     fs.unlinkSync(wavFileLocation);
-
-    console.log({ text });
-    checkUserTextFromSpeechAsync(user, user.guild)(text);
   }
 );
 

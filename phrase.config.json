@@ -30,7 +30,7 @@
     "role": "Dona"
   },
   {
-    "phraseRegex": "([aA]h|[oO]+h+|[oO]ur),? welcome",
+    "phraseRegex": "([aA]h|[oO]+h+|[oO]ur|wow)[,.]? welcome",
     "display": "Ah, welcome!",
     "points": 100,
     "role": "Connor"
@@ -62,6 +62,12 @@
   {
     "phraseRegex": "[rR]avioli",
     "display": "Ravioli",
+    "points": 50,
+    "role": "Kevin"
+  },
+  {
+    "phraseRegex": "bing,? chilling?",
+    "display": "Bing Chilling",
     "points": 50,
     "role": "Kevin"
   },

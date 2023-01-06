@@ -29,12 +29,15 @@ async function speechToTextAsync(memberId, recordingId) {
       console.log({ results });
 
       if (results) {
-        const { confidence, textPhrase } = results[0];
-        console.log({ confidence, textPhrase });
+        const { confidence, textPhrase, audioLength } = results[0];
+        console.log({ confidence, textPhrase, audioLength });
 
         // Check if DeepSpeech TTS is confident enough, otherwise use Azure
         // This is to try to save on excess calls to Azure
-        if (confidence >= DEEP_SPEECH_CONFIDENCE_THRESHOLD) {
+        if (
+          textPhrase !== "" &&
+          confidence >= DEEP_SPEECH_CONFIDENCE_THRESHOLD
+        ) {
           return textPhrase;
         }
       }
