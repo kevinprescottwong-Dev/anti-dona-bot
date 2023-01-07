@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "docker": "docker build . -t kevinprescottwong/anti-dona-bot && docker run -p 49159:8080 -d kevinprescottwong/anti-dona-bot",
+    "docker:build": "docker build . -t kevinprescottwong/anti-dona-bot",
+    "docker:run": "docker run -p 49159:8080 -d kevinprescottwong/anti-dona-bot"
   },
   "author": "Kevin Wong",
   "license": "ISC",
